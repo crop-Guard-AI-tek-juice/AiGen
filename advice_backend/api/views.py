@@ -2,9 +2,23 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.conf import settings
 import google.generativeai as genai
+import re
 
-# Configure Gemini once
 genai.configure(api_key=settings.NLP_API_KEY)
+
+
+def clean_ai_text(text: str) -> str:
+    if not text:
+        return ""
+
+    text = re.sub(r"\*\*(.*?)\*\*", r"\1", text)
+    text = re.sub(r"\*(.*?)\*", r"\1", text)
+    text = re.sub(r"^\s*[-•]\s*", "- ", text, flags=re.MULTILINE)
+    text = re.sub(r"(\d+)\.\s*", r"\n\1. ", text)
+    text = re.sub(r"\n{3,}", "\n\n", text)
+
+    return text.strip()
+
 
 @api_view(["POST"])
 def generate_advice(request):
@@ -39,9 +53,11 @@ and respond to anyother question that is might not be related to crop disease.
         model = genai.GenerativeModel("gemini-2.0-flash")
         response = model.generate_content(prompt)
 
+        cleaned_answer = clean_ai_text(response.text)
+
         return Response({
             "disease": disease_name,
-            "answer": response.text.strip()
+            "answer": cleaned_answer
         })
 
     except Exception as e:
