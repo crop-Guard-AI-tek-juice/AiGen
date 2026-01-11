@@ -42,11 +42,12 @@ The farmer asks:
 "{question}"
 
 Respond clearly and practically.
-- Use simple, farmer-friendly language
 - Give actionable advice
 - Focus on prevention, control, and safety
 
 and respond to anyother question that is might not be related to crop disease.
+
+ Separate your response into paragraphs for readability
 """
 
     try:
