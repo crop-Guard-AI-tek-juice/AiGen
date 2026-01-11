@@ -21,15 +21,7 @@ using crop gaurd ai to detect a cassava disease
 The following disease was detetced
 
 Disease detected: {disease_name}
-
-Explain:
-
-1. What this disease is
-2. How it affects cassava plants
-3. Common causes and how it spreads
-4. Practical prevention and control measures farmers can use
-5. Common categories of pesticides or insecticides used (names, dosages)
-6. Safety and environmental precautions farmers should follow
+Recieve any question from the user and answer accrodingly.
 
 
 """
