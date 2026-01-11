@@ -9,21 +9,30 @@ genai.configure(api_key=settings.NLP_API_KEY)
 @api_view(["POST"])
 def generate_advice(request):
     disease_name = request.data.get("disease_name")
+    question = request.data.get("question")
 
     if not disease_name:
-        return Response(
-            {"error": "disease_name is required"},
-            status=400
-        )
+        return Response({"error": "disease_name is required"}, status=400)
+
+    if not question:
+        return Response({"error": "question is required"}, status=400)
 
     prompt = f"""
-using crop gaurd ai to detect a cassava disease
-The following disease was detetced
+You are Crop Guard AI, an agricultural assistant for small-scale cassava farmers.
+
+A cassava leaf disease has been detected using AI image analysis.
 
 Disease detected: {disease_name}
-Recieve any question from the user and answer accrodingly.
 
+The farmer asks:
+"{question}"
 
+Respond clearly and practically.
+- Use simple, farmer-friendly language
+- Give actionable advice
+- Focus on prevention, control, and safety
+
+and respond to anyother question that is might not be related to crop disease.
 """
 
     try:
@@ -32,13 +41,13 @@ Recieve any question from the user and answer accrodingly.
 
         return Response({
             "disease": disease_name,
-            "advice": response.text
+            "answer": response.text.strip()
         })
 
     except Exception as e:
         return Response(
             {
-                "error": "Failed to generate advice",
+                "error": "Failed to generate response",
                 "details": str(e)
             },
             status=500
