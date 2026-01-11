@@ -29,9 +29,11 @@ NLP_API_KEY = os.getenv("NLP_API_KEY")
 SECRET_KEY = 'django-insecure-^&$y1vc(ha%vk42&=p2^tjbsw%!_3o@eus46%ygrj1#06kg+z^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
-ALLOWED_HOSTS = []
+DEBUG = os.environ.get("DEBUG", "False") == "True"
+
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
